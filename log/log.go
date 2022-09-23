@@ -24,19 +24,17 @@ func Info(v ...interface{}) {
 	logger.Info().Msg(fmt.Sprint(v...))
 }
 
-func Print(v ...interface{}) {
+func Debug(v ...interface{}) {
 	logger.Print(v...)
 }
 
-func Printf(format string, v ...interface{}) {
+var Print = Debug
+
+func Debugf(format string, v ...interface{}) {
 	logger.Printf(format, v...)
 }
 
-var Debug = Print
-
-func Debugf(format string, v ...interface{}) {
-	logger.Debug().Msgf(format, v...)
-}
+var Printf = Debugf
 
 func Error(v ...interface{}) {
 	logger.Error().Msg(fmt.Sprint(v...))
