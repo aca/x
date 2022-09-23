@@ -1,6 +1,7 @@
 package log
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -14,17 +15,29 @@ var logger = log.Output(zerolog.ConsoleWriter{
 	TimeFormat: time.RFC3339,
 }).With().Caller().Logger()
 
-var Info = logger.Info().Msg
+func Info(v ...interface{}) {
+    logger.Info().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+}
+
 var Infof = logger.Info().Msgf
 
-var Debug = logger.Debug().Msg
+func Debug(v ...interface{}) {
+    logger.Debug().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+}
+
 var Debugf = logger.Debug().Msgf
 
 var Print = Debug
 var Printf = Debugf
 
-var Error = logger.Error().Msg
+func Error(v ...interface{}) {
+    logger.Error().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+}
+
 var Errorf = logger.Error().Msgf
 
-var Fatal = logger.Fatal().Msg
+func Fatal(v ...interface{}) {
+    logger.Fatal().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+}
+
 var Fatalf = logger.Fatal().Msgf
