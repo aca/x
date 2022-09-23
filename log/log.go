@@ -19,25 +19,34 @@ func Info(v ...interface{}) {
     logger.Info().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
-var Infof = logger.Info().Msgf
+func Infof(format string, v ...interface{}) {
+    logger.Info().CallerSkipFrame(1).Msgf(format, v...)
+}
 
 func Debug(v ...interface{}) {
     logger.Debug().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
-var Debugf = logger.Debug().Msgf
-
-var Print = Debug
-var Printf = Debugf
+func Debugf(format string, v ...interface{}) {
+    logger.Debug().CallerSkipFrame(1).Msgf(format, v...)
+}
 
 func Error(v ...interface{}) {
     logger.Error().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
-var Errorf = logger.Error().Msgf
+func Errorf(format string, v ...interface{}) {
+    logger.Error().CallerSkipFrame(1).Msgf(format, v...)
+}
+
+var Print = Debug
+var Println = Debug
+var Printf = Debugf
 
 func Fatal(v ...interface{}) {
     logger.Fatal().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
-var Fatalf = logger.Fatal().Msgf
+func Fatalf(format string, v ...interface{}) {
+    logger.Fatal().CallerSkipFrame(1).Msgf(format, v...)
+}

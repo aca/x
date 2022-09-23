@@ -7,8 +7,9 @@ import (
 )
 
 func TestLog(t *testing.T) {
-	log.Infof("hello")
-	log.Debugf("hello")
+	log.Infof("hello1")
+	log.Debugf("hello2")
+	log.Debugf("hello2")
 	log.Errorf("hello")
 	log.Fatalf("fatal")
 	log.Errorf("hello")
