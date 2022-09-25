@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"sync"
 
 	"github.com/aca/x/log"
 
@@ -14,23 +15,34 @@ var (
 	telegram_token  string
 	telegram_chatid int64
 	bot             *tgbotapi.BotAPI
+
+	botInit sync.Once
 )
 
-func init() {
-	telegram_token = os.Getenv("NOTI_TELEGRAM_TOKEN")
-	telegram_chatid, _ = strconv.ParseInt(os.Getenv("NOTI_TELEGRAM_CHATID"), 10, 0)
-	var err error
-	bot, err = tgbotapi.NewBotAPI(telegram_token)
-	if err != nil {
-		log.Errorf("noti: failed to init telegram: %v", err)
-		return
-	}
-	log.Debug("noti: initialized telegram bot")
-}
+func Send(v ...interface{}) (err error) {
+	botInit.Do(func() {
+		telegram_token = os.Getenv("NOTI_TELEGRAM_TOKEN")
+		telegram_chatid, _ = strconv.ParseInt(os.Getenv("NOTI_TELEGRAM_CHATID"), 10, 0)
 
-func Send(v ...interface{}) error {
+		if telegram_chatid == 0 || telegram_token == "" {
+			err = fmt.Errorf("noti: invalid telegram_token: %v, telegram_chatid: %v", telegram_token, telegram_chatid)
+            return
+		} else {
+			bot, err = tgbotapi.NewBotAPI(telegram_token)
+			if err != nil {
+				err = fmt.Errorf("noti: failed to init telegram: %w", err)
+				return
+			}
+			log.Debugf("noti: initialized telegram bot")
+		}
+	})
+
+    if err != nil {
+        return err
+    }
+
 	msg := tgbotapi.NewMessage(820947043, fmt.Sprint(v...))
-	_, err := bot.Send(msg)
+	_, err = bot.Send(msg)
 	if err != nil {
 		return err
 	}
