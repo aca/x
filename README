@@ -1,0 +1,8 @@
+Personal common go code
+
+- logf: stupid simple file logger for debugging, use with `lnav /tmp/logf`
+- log: structured logging based on rs/zerolog
+- jsondb: based on github.com/tailscale/tailscale/jsondb
+- yamldb: yaml version of jsondb
+- noti: noti.Send()
+- throttledtransport: throttled http.Transport for http scraping client
