@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/aca/go/yamldb"
+	"github.com/aca/x/yamldb"
 )
 
 func ExampleYamlDB() {
