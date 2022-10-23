@@ -22,11 +22,6 @@ var DefaultDownloader Downloader = Downloader{
 }
 
 func (d *Downloader) Download(rawURL string, output string) error {
-	var client *http.Client
-	if d.Client == nil {
-		return fmt.Errorf("initialize http.Client")
-	}
-
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return fmt.Errorf("failed to parse %s: %w", u, err)
@@ -57,7 +52,7 @@ func (d *Downloader) Download(rawURL string, output string) error {
 		req.Header.Set(header[0], header[1])
 	}
 
-	resp, err := client.Do(req)
+	resp, err := d.Client.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to download %s: %w", u, err)
 	}
