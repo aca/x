@@ -6,3 +6,4 @@ Personal common go code
 - yamldb: yaml version of jsondb
 - noti: noti.Send()
 - throttledtransport: throttled http.Transport for http scraping client
+- downloader: generic file downloader using http.Client

@@ -47,7 +47,7 @@ func (d *Downloader) Download(rawURL string, output string) error {
 
 	for _, header := range d.Headers {
 		if len(header) != 2 {
-			return fmt.Errorf("invalid header key value pair %+v", header)
+			return fmt.Errorf("invalid header k/v pair %+v", header)
 		}
 		req.Header.Set(header[0], header[1])
 	}
