@@ -1,15 +1,16 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
-
-	"github.com/aca/x/httpsredirect"
 )
 
 func main() {
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        httpsredirect.HTTPSRedirectHandler(w, r)
+        fmt.Fprintf(w, "hello world")
     })
 
-    http.ListenAndServe(":80", nil)
+    log.Println("started")
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
