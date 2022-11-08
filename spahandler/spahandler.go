@@ -3,28 +3,38 @@ package spahandler
 import (
 	"io"
 	"io/fs"
-	"log"
+	"mime"
 	"net/http"
 	"path/filepath"
 )
 
-type spaHandler struct {
-	files map[string][]byte
+type file struct {
+	contents []byte
+	ctype    string
 }
 
-// var staticFiles embed.FS
-// subFS, _ := fs.Sub(staticFiles, "dist")
-// r.PathPrefix("/").Handler(New(subFS))
+type spaHandler struct {
+	files map[string]*file
+}
+
 func New(subbedFS fs.FS) *spaHandler {
 	h := &spaHandler{}
-	h.files = map[string][]byte{}
+	h.files = make(map[string]*file)
 
 	fs.WalkDir(subbedFS, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() {
 			return nil
 		}
 		f, _ := subbedFS.Open(path)
-		h.files["/"+path], _ = io.ReadAll(f)
+		b, _ := io.ReadAll(f)
+		ctype := mime.TypeByExtension(filepath.Ext(path))
+		if ctype == "" {
+			ctype = "application/octet-stream"
+		}
+		h.files["/"+path] = &file{
+			contents: b,
+			ctype:    ctype,
+		}
 		f.Close()
 		return nil
 	})
@@ -39,17 +49,12 @@ func (h *spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if b, ok := h.files[path]; ok {
-		_, err := w.Write(b)
-		if err != nil {
-			log.Println(err)
-		}
-		return
-	} else {
-		_, err := w.Write(h.files["/index.html"])
-		if err != nil {
-			log.Println(err)
-		}
-		return
+	var f *file
+	var ok bool
+	if f, ok = h.files[path]; !ok {
+		f = h.files["/index.html"]
 	}
+
+	w.Header().Set("Content-Type", f.ctype)
+	w.Write(f.contents)
 }
