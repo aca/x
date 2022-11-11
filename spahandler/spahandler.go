@@ -56,5 +56,7 @@ func (h *spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", f.ctype)
-	w.Write(f.contents)
+	if r.Method == http.MethodGet {
+        w.Write(f.contents)
+	}
 }
