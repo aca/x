@@ -22,37 +22,37 @@ var (
 )
 
 func SetLevel(level zerolog.Level) {
-	logger = logger.Level(level)
+	Logger = Logger.Level(level)
 }
 
-var logger = log.Output(zerolog.ConsoleWriter{
+var Logger = log.Output(zerolog.ConsoleWriter{
 	Out:        os.Stderr,
 	NoColor:    false,
 	TimeFormat: time.RFC3339,
 }).With().Caller().Logger()
 
 func Info(v ...interface{}) {
-	logger.Info().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+	Logger.Info().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
 func Infof(format string, v ...interface{}) {
-	logger.Info().CallerSkipFrame(1).Msgf(format, v...)
+	Logger.Info().CallerSkipFrame(1).Msgf(format, v...)
 }
 
 func Debug(v ...interface{}) {
-	logger.Debug().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+	Logger.Debug().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
 func Debugf(format string, v ...interface{}) {
-	logger.Debug().CallerSkipFrame(1).Msgf(format, v...)
+	Logger.Debug().CallerSkipFrame(1).Msgf(format, v...)
 }
 
 func Error(v ...interface{}) {
-	logger.Error().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+	Logger.Error().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
 func Errorf(format string, v ...interface{}) {
-	logger.Error().CallerSkipFrame(1).Msgf(format, v...)
+	Logger.Error().CallerSkipFrame(1).Msgf(format, v...)
 }
 
 var (
@@ -62,9 +62,9 @@ var (
 )
 
 func Fatal(v ...interface{}) {
-	logger.Fatal().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
+	Logger.Fatal().CallerSkipFrame(1).Msg(fmt.Sprint(v...))
 }
 
 func Fatalf(format string, v ...interface{}) {
-	logger.Fatal().CallerSkipFrame(1).Msgf(format, v...)
+	Logger.Fatal().CallerSkipFrame(1).Msgf(format, v...)
 }
