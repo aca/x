@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/chromedp/cdproto v0.0.0-20221029224954-108014bf7279
 	github.com/chromedp/chromedp v0.8.6
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/go-cmp v0.5.9
