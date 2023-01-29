@@ -50,7 +50,7 @@ func Open[T any](path string) (*DB[T], error) {
 
 // Save writes db.Data back to disk.
 func (db *DB[T]) Save() error {
-	bs, err := json.Marshal(db.Data)
+	bs, err := json.MarshalIndent(db.Data, "", "\t")
 	if err != nil {
 		return err
 	}
