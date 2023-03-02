@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/aca/x/log"
-
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
@@ -33,7 +31,7 @@ func Send(v ...interface{}) (err error) {
 				err = fmt.Errorf("noti: failed to init telegram: %w", err)
 				return
 			}
-			log.Debugf("noti: initialized telegram bot")
+			// log.Debugf("noti: initialized telegram bot")
 		}
 	})
 

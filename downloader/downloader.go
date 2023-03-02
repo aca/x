@@ -2,16 +2,18 @@ package downloader
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
+
+	"github.com/aca/x/fsutil"
 )
 
 type Downloader struct {
-	Client  *http.Client
-	Headers [][]string
+	Client    *http.Client
+	Directory string
+	Headers   [][]string
 }
 
 var DefaultDownloader Downloader = Downloader{
@@ -22,6 +24,10 @@ var DefaultDownloader Downloader = Downloader{
 }
 
 func (d *Downloader) Download(rawURL string, output string) error {
+	if d.Client == nil {
+		d.Client = http.DefaultClient
+	}
+
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return fmt.Errorf("failed to parse %s: %w", u, err)
@@ -29,6 +35,10 @@ func (d *Downloader) Download(rawURL string, output string) error {
 
 	if output == "" {
 		output = filepath.Join(u.Host, u.Path)
+	}
+
+	if d.Directory != "" {
+		output = filepath.Join(d.Directory, output)
 	}
 
 	if fileExists(output) {
@@ -41,9 +51,9 @@ func (d *Downloader) Download(rawURL string, output string) error {
 	}
 
 	req, err := http.NewRequest(http.MethodGet, rawURL, nil)
-    if err != nil {
-        return err
-    }
+	if err != nil {
+		return err
+	}
 
 	for _, header := range d.Headers {
 		if len(header) != 2 {
@@ -58,22 +68,7 @@ func (d *Downloader) Download(rawURL string, output string) error {
 	}
 	defer resp.Body.Close()
 
-	f, err := os.Create(output + ".tmp")
-	if err != nil {
-		return fmt.Errorf("failed to download %s: %w", u, err)
-	}
-
-	_, err = io.Copy(f, resp.Body)
-	if err != nil {
-		return fmt.Errorf("failed to download %s: %w", u, err)
-	}
-
-	err = os.Rename(output+".tmp", output)
-	if err != nil {
-		return fmt.Errorf("failed to download %s: %w", u, err)
-	}
-
-	return nil
+    return fsutil.WriteFileFromReader(output, resp.Body)
 }
 
 func Download(url string, output string) error {

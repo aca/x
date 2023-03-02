@@ -13,7 +13,14 @@ import (
 
 // SetCookiesFromRemoteAllocator(http.DefaultClient, "ws://127.0.0.1:9222/")
 func SetCookiesFromRemoteAllocator(httpc *http.Client, remoteURL string) {
-	actx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://127.0.0.1:9222/")
+	if remoteURL == "" {
+		remoteURL = "ws://127.0.0.1:9222/"
+	}
+	if httpc == nil {
+		httpc = http.DefaultClient
+	}
+
+	actx, cancel := chromedp.NewRemoteAllocator(context.Background(), remoteURL)
 	defer cancel()
 	actx, cancel = chromedp.NewContext(actx)
 	defer cancel()

@@ -8,6 +8,7 @@ import (
 )
 
 var Logger *log.Logger
+var LogFile string
 
 func init() {
 	tmpdir := filepath.Join(os.TempDir(), "logf")
@@ -16,7 +17,9 @@ func init() {
 		panic(err)
 	}
 
-	f, err := os.Create(filepath.Join(tmpdir, time.Now().Format("060102_150405")))
+    LogFile := filepath.Join(tmpdir, time.Now().Format("060102_150405"))
+
+	f, err := os.Create(LogFile)
 	if err != nil {
 		panic(err)
 	}
