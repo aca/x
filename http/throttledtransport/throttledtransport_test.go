@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aca/x/throttledtransport"
+	"github.com/aca/x/http/throttledtransport"
 )
 
 func TestThrottledTransport(t *testing.T) {

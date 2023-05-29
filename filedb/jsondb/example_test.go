@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/aca/x/jsondb"
+	"github.com/aca/x/filedb/jsondb"
 )
 
 func ExampleJsonDB() {
